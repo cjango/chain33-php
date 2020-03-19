@@ -15,7 +15,7 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__ . '/config.php' => config_path('live.php')], 'chain33');
+            $this->publishes([__DIR__ . '/config.php' => config_path('chain33.php')], 'chain33');
         }
     }
 
