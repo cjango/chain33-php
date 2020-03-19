@@ -1,6 +1,6 @@
 <?php
 
-namespace Jason\Chain33\;
+namespace Jason\Chain33\Manage;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
