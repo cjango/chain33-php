@@ -1,0 +1,34 @@
+{
+    "name": "jasonc/chain33-php",
+    "description": "chain33 区块链PHP SDK",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "C.Jason",
+            "email": "chenjxlg@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "pimple/pimple": "^3.0",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jason\\": "src/"
+        },
+        "files": [
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jason\\Chain33\\ServiceProvider"
+            ],
+            "aliases": {
+                "Chain33": "Jason\\Chain33"
+            }
+        }
+    }
+}
