@@ -13,22 +13,7 @@ class Application extends Container
      */
     protected $providers = [
         Account\ServiceProvider::class,
-        Balance\ServiceProvider::class,
-        BlockChain\ServiceProvider::class,
-        Evm\ServiceProvider::class,
-        Exector\ServiceProvider::class,
         Kernel\ServiceProvider::class,
-        Manage\ServiceProvider::class,
-        Mempool\ServiceProvider::class,
-        Multisig\ServiceProvider::class,
-        NodeGroup\ServiceProvider::class,
-        Oracle\ServiceProvider::class,
-        Paracross\ServiceProvider::class,
-        Retrieve\ServiceProvider::class,
-        System\ServiceProvider::class,
-        Token\ServiceProvider::class,
-        Transaction\ServiceProvider::class,
-        Unfreeze\ServiceProvider::class,
         Wallet\ServiceProvider::class,
     ];
 
@@ -58,7 +43,7 @@ class Application extends Container
     /**
      * 获取服务 $this->account->do()
      * @Author: <C.Jason>
-     * @Date: 2020/3/17 20:44 下午
+     * @Date  : 2020/3/17 20:44 下午
      * @param $name 服务名称
      * @return mixed
      */
@@ -70,7 +55,7 @@ class Application extends Container
     /**
      * Notes: 获取服务 $this->account($args)->do()
      * @Author: <C.Jason>
-     * @Date: 2020/3/17 20:44 下午
+     * @Date  : 2020/3/17 20:44 下午
      * @param $name 服务名称
      * @param $arguments
      * @return mixed
