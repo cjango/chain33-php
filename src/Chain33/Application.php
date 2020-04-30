@@ -4,6 +4,15 @@ namespace Jason\Chain33;
 
 use Pimple\Container;
 
+/**
+ * Class Chain33
+ * @package Jason
+ * @method static Account Account
+ * @method static Chain Chain
+ * @method static Kernel Kernel
+ * @method static Net Net
+ * @method static Wallet Wallet
+ */
 class Application extends Container
 {
 
@@ -13,7 +22,9 @@ class Application extends Container
      */
     protected $providers = [
         Account\ServiceProvider::class,
+        Chain\ServiceProvider::class,
         Kernel\ServiceProvider::class,
+        Net\ServiceProvider::class,
         Wallet\ServiceProvider::class,
     ];
 

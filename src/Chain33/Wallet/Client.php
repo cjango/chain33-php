@@ -8,11 +8,13 @@ class Client extends BaseClient
 {
 
     /**
-     * 创建一个钱包
-     * @param $password
+     * Notes: 创建一个钱包
+     * @Author: <C.Jason>
+     * @Date: 2020/4/30 17:33
+     * @param string $password 钱包密码
      * @return bool
      */
-    public function create($password): bool
+    public function create(string $password): bool
     {
         $seed = $this->client->GenSeed([
             'lang' => 0,
@@ -21,11 +23,13 @@ class Client extends BaseClient
         return $this->client->SaveSeed([
             'seed'   => $seed->seed,
             'passwd' => $password,
-        ])->isOK;
+        ])['isOK'];
     }
 
     /**
-     * 获取钱包助记词
+     * Notes: 获取钱包助记词
+     * @Author: <C.Jason>
+     * @Date: 2020/4/30 17:34
      * @return string
      */
     public function getSeed(): string
@@ -34,32 +38,32 @@ class Client extends BaseClient
 
         return $this->client->GetSeed([
             'passwd' => $this->config['password'],
-        ])->seed;
+        ])['seed'];
     }
 
     /**
      * Notes: 修改密码
      * @Author: <C.Jason>
-     * @Date: 2020/3/18 21:38
-     * @param $old
-     * @param $new
+     * @Date: 2020/4/30 17:36
+     * @param string $old 旧密码
+     * @param string $new 新密码
      * @return bool
      */
-    public function password($old, $new): bool
+    public function password(string $old, string $new): bool
     {
         return $this->client->SetPasswd([
             'oldPass' => $old,
             'newPass' => $new,
-        ])->isOK;
+        ])['isOK'];
     }
 
     /**
      * Notes: 钱包状态
      * @Author: <C.Jason>
      * @Date: 2020/3/18 21:38
-     * @return mixed
+     * @return array
      */
-    public function status()
+    public function status(): array
     {
         return $this->client->GetWalletStatus();
     }
@@ -68,31 +72,31 @@ class Client extends BaseClient
      * Notes: 设置交易费用
      * @Author: <C.Jason>
      * @Date: 2020/3/18 21:38
-     * @param $amount
+     * @param int $amount
      * @return bool
      */
-    public function setFee($amount): bool
+    public function setFee(int $amount): bool
     {
         $this->unlock(false);
 
         return $this->client->SetTxFee([
             'amount' => $amount,
-        ])->isOK;
+        ])['isOK'];
     }
 
     /**
      * Notes:
      * @Author: <C.Jason>
-     * @Date: 2020/3/18 21:39
-     * @param $from
-     * @param $to
-     * @param $amount
-     * @param $note
-     * @param $isToken
-     * @param $tokenSymbol
-     * @return mixed
+     * @Date: 2020/4/30 17:41
+     * @param string $from 来源地址
+     * @param string $to 发送到地址
+     * @param int $amount 发送金额
+     * @param string $note 备注
+     * @param bool $isToken 是否是token类型的转账（非token转账这个不用填）
+     * @param string $tokenSymbol toekn的symbol（非token转账这个不用填）
+     * @return string
      */
-    public function send($from, $to, $amount, $note, $isToken, $tokenSymbol)
+    public function send(string $from, string $to, int $amount, string $note, bool $isToken, string $tokenSymbol): string
     {
         $this->unlock(false);
 
@@ -103,61 +107,49 @@ class Client extends BaseClient
             'note'        => $note,
             'isToken'     => $isToken,
             'tokenSymbol' => $tokenSymbol,
-        ]);
+        ])['hash'];
     }
 
     /**
-     * Notes:
+     * Notes: 获取钱包交易列表
      * @Author: <C.Jason>
-     * @Date: 2020/3/18 21:39
-     * @param $fromTx
-     * @param $count
-     * @param $direction
-     * @param $mode
-     * @param $sendRecvPrivacy
-     * @param $address
-     * @param $tokenname
-     * @return mixed
+     * @Date: 2020/4/30 17:44
+     * @param string $fromTx
+     * @param int $count
+     * @param int $direction
+     * @param int $mode
+     * @return array
      */
-    public function txList($fromTx, $count, $direction, $mode, $sendRecvPrivacy, $address, $tokenname)
+    public function txList(string $fromTx, int $count, int $direction, int $mode): array
     {
         return $this->client->WalletTxList([
-            'fromTx'          => $fromTx,
-            'count'           => $count,
-            'direction'       => $direction,
-            'mode'            => $mode,
-            'sendRecvPrivacy' => $sendRecvPrivacy,
-            'address'         => $address,
-            'tokenname'       => $tokenname,
-        ]);
+            'fromTx'    => $fromTx,
+            'count'     => $count,
+            'direction' => $direction,
+            'mode'      => $mode,
+        ])['txDetails'];
     }
 
     /**
-     * Notes:
+     * Notes: 交易签名
      * @Author: <C.Jason>
-     * @Date: 2020/3/18 21:40
-     * @param $addr
-     * @param $privkey
-     * @param $txHex
-     * @param $expire
-     * @param $index
-     * @param $fee
-     * @param $token
-     * @param $newToAddr
-     * @return mixed
+     * @Date: 2020/4/30 18:47
+     * @param string $addr 签名地址
+     * @param string $privkey 签名私钥，addr与key可以只输入其一
+     * @param string $txHex 交易原始数据
+     * @param string $expire 过期时间 GO 格式
+     * @param int $index 若是签名交易组，则为要签名的交易序号，从1开始，小于等于0则为签名组内全部交易
+     * @return string
      */
-    public function sign($addr, $privkey, $txHex, $expire, $index, $fee, $token, $newToAddr)
+    public function sign(string $addr, string $privkey, string $txHex, string $expire, int $index = 0): string
     {
         return $this->client->SignRawTx([
-            'addr'      => $addr,
-            'privkey'   => $privkey,
-            'txHex'     => $txHex,
-            'expire'    => $expire,
-            'index'     => $index,
-            'fee'       => $fee,
-            'token'     => $token,
-            'newToAddr' => $newToAddr,
-        ]);
+            'addr'    => $addr,
+            'privkey' => $privkey,
+            'txHex'   => $txHex,
+            'expire'  => $expire,
+            'index'   => $index,
+        ])['txhex'];
     }
 
 }

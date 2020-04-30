@@ -8,28 +8,13 @@ use Jason\Chain33\Kernel\Support\Base58;
 class Client extends BaseClient
 {
 
-    const PEM_REGEX = '/' .
-                      /* line start */
-                      '(?:^|[\r\n])' .
-                      /* header */
-                      '-----BEGIN (.+?)-----[\r\n]+' .
-                      /* payload */
-                      '(.+?)' .
-                      /* trailer */
-                      '[\r\n]+-----END \\1-----' .
-                      '/ms';
-
-    public function fromString(string $str)
-    {
-        if (!preg_match(self::PEM_REGEX, $str, $match)) {
-            throw new \UnexpectedValueException('Not a PEM formatted string.');
-        }
-        $payload = preg_replace('/\s+/', '', $match[2]);
-
-        return base64_decode($payload, true);
-    }
-
-    public function local()
+    /**
+     * Notes: 本地生成私钥-钱包地址
+     * @Author: <C.Jason>
+     * @Date: 2020/4/30 15:01
+     * @return array
+     */
+    public function local(): array
     {
         $config = [
             'private_key_type' => OPENSSL_KEYTYPE_EC,
@@ -45,7 +30,14 @@ class Client extends BaseClient
         ];
     }
 
-    protected function getAddress($keyDetail)
+    /**
+     * Notes: 获取钱包地址
+     * @Author: <C.Jason>
+     * @Date: 2020/4/30 15:00
+     * @param $keyDetail
+     * @return string
+     */
+    protected function getAddress($keyDetail): string
     {
         $x = str_pad(bin2hex($keyDetail['ec']['x']), 64, '0', STR_PAD_LEFT);
         $y = str_pad(bin2hex($keyDetail['ec']['y']), 64, '0', STR_PAD_LEFT);
@@ -59,7 +51,7 @@ class Client extends BaseClient
         $sha256   = hash('sha256', hex2bin($derPubKey));
         $ripem160 = hash('ripemd160', hex2bin($sha256));
         // 加入区块链版本 00
-        $hex_with_prefix = '00' . $ripem160;
+        $hex_with_prefix = $this->config['version'] . $ripem160;
         // 校验码
         $sha256   = hash('sha256', hex2bin($hex_with_prefix));
         $checksum = hash('sha256', hex2bin($sha256));
@@ -73,78 +65,80 @@ class Client extends BaseClient
      * Notes: 创建一个账户
      * @Author: <C.Jason>
      * @Date  : 2020/3/18 21:34
-     * @param $label
+     * @param string $label 账户标签
      * @return string 账户地址
      */
-    public function create($label): string
+    public function create(string $label): string
     {
         $this->unlock(false);
 
         return $this->client->NewAccount([
             'label' => $label,
-        ])->acc['addr'];
+        ])['acc']['addr'];
     }
 
     /**
      * Notes: 获取账户列表
      * @Author: <C.Jason>
      * @Date  : 2020/3/18 21:34
-     * @param bool $withoutBalance
+     * @param bool $withoutBalance 返回 label 和 addr 信息
      * @return array
      */
-    public function get($withoutBalance = false): array
+    public function get(bool $withoutBalance = false): array
     {
         return $this->client->GetAccounts([
             'withoutBalance' => false,
-        ])->wallets;
+        ])['wallets'];
     }
 
     /**
      * Notes: 合并账户余额
      * @Author: <C.Jason>
      * @Date  : 2020/3/18 21:35
-     * @param $to
+     * @param string $to 合并钱包上的所有余额到一个账户地址
      * @return array|null
      */
-    public function merge($to): ?array
+    public function merge(string $to): ?array
     {
         $this->unlock(false);
 
         return $this->client->MergeBalance([
             'to' => $to,
-        ])->hashes;
+        ])['hashes'];
     }
 
     /**
-     * 这个应该是用来，将原有的用户恢复到系统上的
-     * @param $lable
-     * @param $privkey
+     * Notes: 导入私钥
+     * @Author: <C.Jason>
+     * @Date: 2020/4/30 17:21
+     * @param string $lable 账户标签
+     * @param string $privkey 账户私钥
      * @return array
      */
-    public function import($lable, $privkey): array
+    public function import(string $lable, string $privkey): array
     {
         $this->unlock(false);
 
         return $this->client->ImportPrivkey([
             'privkey' => $privkey,
             'label'   => $lable,
-        ])->acc;
+        ])['acc'];
     }
 
     /**
      * Notes: 导出私钥
      * @Author: <C.Jason>
      * @Date  : 2020/3/18 21:36
-     * @param $data
+     * @param string $addr 待导出私钥的账户地址
      * @return string
      */
-    public function dump($data): string
+    public function dump(string $addr): string
     {
         $this->unlock(false);
 
         return $this->client->DumpPrivkey([
-            'data' => $data,
-        ])->data;
+            'data' => $addr,
+        ])['data'];
     }
 
 }

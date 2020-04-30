@@ -63,12 +63,7 @@ class Client
                 throw new RuntimeException($resJson['error'] . '|' . $body->toJson());
             }
 
-            if (is_array($resJson['result'])) {
-                return new Support\Collection($resJson['result']);
-            }
-
             return $resJson['result'];
-
         } catch (Exception $exception) {
             throw new RuntimeException($exception->getMessage());
         }
