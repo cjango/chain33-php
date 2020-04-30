@@ -21,7 +21,7 @@ class Client extends BaseClient
         ]);
 
         return $this->client->SaveSeed([
-            'seed'   => $seed->seed,
+            'seed'   => $seed['seed'],
             'passwd' => $password,
         ])['isOK'];
     }

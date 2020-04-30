@@ -122,7 +122,7 @@ class Client extends BaseClient
         return $this->client->ImportPrivkey([
             'privkey' => $privkey,
             'label'   => $lable,
-        ])['acc'];
+        ])['acc']['addr'];
     }
 
     /**

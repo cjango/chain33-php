@@ -19,10 +19,9 @@ class BaseClient
     }
 
     /**
-     * Notes: 解锁钱包
-     * @Author: <C.Jason>
-     * @Date: 2020/4/30 17:30
-     * @param bool $ticket 解锁整个钱包
+     * 解锁钱包
+     * @param bool $ticket 只解锁ticket
+     * @return void
      */
     protected function unlock(bool $ticket = true): void
     {
