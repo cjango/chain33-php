@@ -5,6 +5,10 @@ namespace Jason\Chain33\Account;
 use Jason\Chain33\Kernel\BaseClient;
 use Jason\Chain33\Kernel\Support\Base58;
 
+/**
+ * Class Client
+ * @package Jason\Chain33\Account
+ */
 class Client extends BaseClient
 {
 
@@ -113,9 +117,9 @@ class Client extends BaseClient
      * @Date: 2020/4/30 17:21
      * @param string $lable 账户标签
      * @param string $privkey 账户私钥
-     * @return array
+     * @return string
      */
-    public function import(string $lable, string $privkey): array
+    public function import(string $lable, string $privkey): string
     {
         $this->unlock(false);
 

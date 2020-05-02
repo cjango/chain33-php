@@ -7,14 +7,15 @@ use Pimple\Container;
 /**
  * Class Application
  * @package Jason\Chain33
- * @method static Account Account
- * @method static Balance Balance
- * @method static Chain Chain
- * @method static Kernel Kernel
- * @method static Miner Miner
- * @method static Net Net
- * @method static Token Token
- * @method static Wallet Wallet
+ * @method static Account\Client Account
+ * @method static Balance\Client Balance
+ * @method static Chain\Client Chain
+ * @method static Miner\Client Miner
+ * @method static Net\Client Net
+ * @method static Storage\Client Storage
+ * @method static Token\Client Token
+ * @method static Transaction\Client Transaction
+ * @method static Wallet\Client Wallet
  */
 class Application extends Container
 {
@@ -28,9 +29,12 @@ class Application extends Container
         Balance\ServiceProvider::class,
         Chain\ServiceProvider::class,
         Kernel\ServiceProvider::class,
+        Manage\ServiceProvider::class,
         Miner\ServiceProvider::class,
         Net\ServiceProvider::class,
+        Storage\ServiceProvider::class,
         Token\ServiceProvider::class,
+        Transaction\ServiceProvider::class,
         Wallet\ServiceProvider::class,
     ];
 

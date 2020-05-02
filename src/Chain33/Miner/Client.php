@@ -6,7 +6,7 @@ use Jason\Chain33\Kernel\BaseClient;
 
 /**
  * Class Client
- * @package Jason\Chain33\Net
+ * @package Jason\Chain33\Miner
  */
 class Client extends BaseClient
 {

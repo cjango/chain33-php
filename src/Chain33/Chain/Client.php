@@ -31,7 +31,7 @@ class Client extends BaseClient
      * @param bool $isDetail 是否打印区块详细信息
      * @return array
      */
-    public function blocks(int $start, int $end, bool $isDetail = true): array
+    public function blocks(int $start, int $end, bool $isDetail = false): array
     {
         return $this->client->GetBlocks([
             'start'    => $start,
@@ -118,7 +118,7 @@ class Client extends BaseClient
      * @param bool $disableDetail 是否打印区块详细信息
      * @return array
      */
-    public function hashes(array $hashs, bool $disableDetail = true): array
+    public function hashes(array $hashs, bool $disableDetail = false): array
     {
         return $this->client->GetBlockByHashes([
             'hashes'        => $hashs,
@@ -135,7 +135,7 @@ class Client extends BaseClient
      * @param bool $isDetail 是否打印区块详细信息
      * @return array
      */
-    public function sequences(int $start, int $end, bool $isDetail = true): array
+    public function sequences(int $start, int $end, bool $isDetail = false): array
     {
         return $this->client->GetBlockSequences([
             'start'    => $start,

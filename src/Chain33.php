@@ -7,14 +7,16 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Class Chain33
  * @package Jason
- * @method static Account Account
- * @method static Balance Balance
- * @method static Chain Chain
- * @method static Kernel Kernel
- * @method static Miner Miner
- * @method static Net Net
- * @method static Token Token
- * @method static Wallet Wallet
+ * @method static Chain33\Account\Client Account
+ * @method static Chain33\Balance\Client Balance
+ * @method static Chain33\Chain\Client Chain
+ * @method static Chain33\Manage\Client Manage
+ * @method static Chain33\Miner\Client Miner
+ * @method static Chain33\Net\Client Net
+ * @method static Chain33\Storage\Client Storage
+ * @method static Chain33\Token\Client Token
+ * @method static Chain33\Transaction\Client Transaction
+ * @method static Chain33\Wallet\Client Wallet
  */
 class Chain33 extends Facade
 {

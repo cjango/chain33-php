@@ -4,6 +4,10 @@ namespace Jason\Chain33\Wallet;
 
 use Jason\Chain33\Kernel\BaseClient;
 
+/**
+ * Class Client
+ * @package Jason\Chain33\BaseClient
+ */
 class Client extends BaseClient
 {
 
@@ -128,28 +132,6 @@ class Client extends BaseClient
             'direction' => $direction,
             'mode'      => $mode,
         ])['txDetails'];
-    }
-
-    /**
-     * Notes: 交易签名
-     * @Author: <C.Jason>
-     * @Date: 2020/4/30 18:47
-     * @param string $addr 签名地址
-     * @param string $privkey 签名私钥，addr与key可以只输入其一
-     * @param string $txHex 交易原始数据
-     * @param string $expire 过期时间 GO 格式
-     * @param int $index 若是签名交易组，则为要签名的交易序号，从1开始，小于等于0则为签名组内全部交易
-     * @return string
-     */
-    public function sign(string $addr, string $privkey, string $txHex, string $expire, int $index = 0): string
-    {
-        return $this->client->SignRawTx([
-            'addr'    => $addr,
-            'privkey' => $privkey,
-            'txHex'   => $txHex,
-            'expire'  => $expire,
-            'index'   => $index,
-        ])['txhex'];
     }
 
 }
