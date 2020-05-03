@@ -63,8 +63,8 @@ class Client extends BaseClient
     {
         return $this->client->CreateRawTransaction([
             'to'          => $to,
-            'amount'      => $amount * 10000000,
-            'fee'         => $fee * 10000000,
+            'amount'      => $amount * 100000000,
+            'fee'         => $fee * 100000000,
             'note'        => $note,
             'isToken'     => $isToken,
             'isWithdraw'  => $isWithdraw,
@@ -93,7 +93,7 @@ class Client extends BaseClient
             'expire'    => $expire,
             'index'     => 0,
             'token'     => '',
-            'fee'       => $fee * 10000000,
+            'fee'       => $fee * 100000000,
             'newToAddr' => '',
         ]);
     }

@@ -22,8 +22,8 @@ class Client extends BaseClient
             'name'         => $symbol,
             'symbol'       => $symbol,
             'introduction' => $symbol,
-            'total'        => $total * 10000000,
-            'price'        => $price * 10000000,
+            'total'        => $total * 100000000,
+            'price'        => $price * 100000000,
             'category'     => 1,
             'owner'        => $owner,
         ], 'token');

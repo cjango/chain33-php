@@ -16,9 +16,13 @@ use Pimple\Container;
  * @method static Token\Client Token
  * @method static Transaction\Client Transaction
  * @method static Wallet\Client Wallet
+ * 组合的请求方式
+ * @method static newAccountLocal()
  */
 class Application extends Container
 {
+
+    use AllianceTrait;
 
     /**
      * 要注册的服务类
