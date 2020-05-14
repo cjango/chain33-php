@@ -28,7 +28,7 @@ class BaseClient
         $this->client->UnLock([
             'passwd'         => $this->config['password'],
             'walletOrTicket' => $ticket,
-            'timeout'        => 5,
+            'timeout'        => 0,
         ]);
     }
 
