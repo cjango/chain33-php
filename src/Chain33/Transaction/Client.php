@@ -113,4 +113,42 @@ class Client extends BaseClient
         ]);
     }
 
+    /**
+     * Notes: 根据地址获取交易信息
+     * @Author: <C.Jason>
+     * @Date  : 2020/5/14 2:48 下午
+     * @param string $addr  要查询的账户地址
+     * @param int    $count 返回的数据条数
+     * @param int    $flag  查询的方向；0：正向查询，区块高度从低到高；-1：反向查询；
+     * @param int    $direction
+     * @param int    $height
+     * @param int    $index
+     * @return mixed
+     */
+    public function getTx(string $addr, int $count, int $flag = 0, int $direction = 0, int $height = -1, int $index = 0)
+    {
+        return $this->client->GetTxByAddr([
+            'addr'      => $addr,
+            'flag'      => $flag,
+            'count'     => $count,
+            'direction' => $direction,
+            'height'    => $height,
+            'index'     => $index,
+        ]);
+    }
+
+    /**
+     * Notes: 获取地址相关摘要信息
+     * @Author: <C.Jason>
+     * @Date  : 2020/5/14 2:57 下午
+     * @param $addr 要查询的地址信息
+     * @return mixed
+     */
+    public function overview($addr)
+    {
+        return $this->client->GetAddrOverview([
+            'addr'      => $addr,
+        ]);
+    }
+
 }
