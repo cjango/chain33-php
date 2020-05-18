@@ -12,6 +12,7 @@
     "require": {
         "php": ">=7.1.3",
         "guzzlehttp/guzzle": "^6.5",
+        "google/protobuf": "^3.11",
         "pimple/pimple": "^3.0",
         "stephenhill/base58": "^1.1"
     },

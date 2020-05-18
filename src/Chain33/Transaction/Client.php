@@ -84,7 +84,7 @@ class Client extends BaseClient
      * @param string $expire  过期时间
      * @return string 交易签名后的十六进制字符串
      */
-    public function sign(string $privkey, string $txHex, int $fee = 0, string $expire = '60s'): string
+    public function sign(string $privkey, string $txHex, string $expire = '300s'): string
     {
         return $this->client->SignRawTx([
             'addr'      => '',
@@ -93,7 +93,7 @@ class Client extends BaseClient
             'expire'    => $expire,
             'index'     => 0,
             'token'     => '',
-            'fee'       => $fee,
+            'fee'       => 0,
             'newToAddr' => '',
         ]);
     }
@@ -147,7 +147,7 @@ class Client extends BaseClient
     public function overview($addr)
     {
         return $this->client->GetAddrOverview([
-            'addr'      => $addr,
+            'addr' => $addr,
         ]);
     }
 

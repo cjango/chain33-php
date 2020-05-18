@@ -14,34 +14,80 @@ class Client extends BaseClient
     /**
      * Notes: 发行TOKEN
      * @Author: <C.Jason>
-     * @Date: 2020/5/2 22:09
+     * @Date  : 2020/5/2 22:09
      */
-    public function publish(string $symbol, int $total, int $price, string $owner)
+    public function publish(string $symbol, int $total, string $owner)
     {
         $txHex = $this->client->CreateRawTokenPreCreateTx([
             'name'         => $symbol,
             'symbol'       => $symbol,
             'introduction' => $symbol,
-            'total'        => $total * 100000000,
-            'price'        => $price * 100000000,
+            'total'        => $total,
+            'price'        => 0,
             'category'     => 1,
             'owner'        => $owner,
         ], 'token');
 
-        $data = $this->app->transaction->sign('55637b77b193f2c60c6c3f95d8a5d3a98d15e2d42bf0aeae8e975fc54035e2f4', $txHex);
+        $data = $this->app->transaction->sign('65622cbb675a62ec6de652811dc649286652b75c80850ccd7bb30ffb053c5af9', $txHex);
 
         return $this->app->transaction->send($data);
     }
 
+    /**
+     * Notes: 完成发行TOKEN
+     * @Author: <C.Jason>
+     * @Date  : 2020/5/14 6:17 下午
+     * @param string $symbol
+     * @param string $owner
+     * @return mixed
+     */
     public function finish(string $symbol, string $owner)
     {
-        $txHex = $this->client->CreateRawTokenPreCreateTx([
-            'symbol' => $symbol,
+        $txHex = $this->client->CreateRawTokenFinishTx([
+            'symbol' => strtoupper($symbol),
             'owner'  => $owner,
         ], 'token');
-        $data  = $this->app->transaction->sign('55637b77b193f2c60c6c3f95d8a5d3a98d15e2d42bf0aeae8e975fc54035e2f4', $txHex);
+        $data  = $this->app->transaction->sign('65622cbb675a62ec6de652811dc649286652b75c80850ccd7bb30ffb053c5af9', $txHex);
 
         return $this->app->transaction->send($data);
+    }
+
+    /**
+     * Notes: 查询所有预创建的token | 查询所有创建成功的token
+     * @Author: <C.Jason>
+     * @Date  : 2020/5/14 6:18 下午
+     * @param int $status 0预创建 1创建成功
+     * @return mixed
+     */
+    public function get($status = 0)
+    {
+        return $this->client->Query([
+            'execer'   => 'token',
+            'funcName' => 'GetTokens',
+            'payload'  => [
+                'status'     => $status,
+                'queryAll'   => true,
+                'symbolOnly' => true,
+            ],
+        ]);
+    }
+
+    /**
+     * Notes: 查询指定创建成功的token
+     * @Author: <C.Jason>
+     * @Date  : 2020/5/14 6:19 下午
+     * @param $symbol token的Symbol
+     * @return mixed
+     */
+    public function info($symbol)
+    {
+        return $this->client->Query([
+            'execer'   => 'token',
+            'funcName' => 'GetTokenInfo',
+            'payload'  => [
+                'data' => $symbol,
+            ],
+        ]);
     }
 
 }

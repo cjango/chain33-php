@@ -13,11 +13,23 @@ class Client extends BaseClient
 
     public function content(string $content, string $privateKey)
     {
-        $txHex = $this->client->CreateRawTokenPreCreateTx([
-            'name'         => $symbol,
-        ], 'token');
+        $con = new \Types\ContentOnlyNotaryStorage();
+        $con->setContent($content);
+        $con->setKey('');
+        $con->setOp(0);
 
-        $data = $this->app->transaction->sign($privateKey, $txHex);
+        $storage = new \Types\StorageAction();
+        $storage->setContentStorage($con);
+        $storage->setTy(1);
+
+        $trans = new \Types\Transaction();
+
+        $trans->setExecer('storage');
+        $trans->setTo('1Af1JWXYVJwMrSkC7QpG4KVckNKgXmnhm4');
+        $trans->setFee(100000);
+        $trans->setNonce(mt_rand() * rand(10000, 99999));
+        $trans->setPayload($storage->serializeToString());
+        $data = $this->app->transaction->sign($privateKey, bin2hex($trans->serializeToString()));
 
         return $this->app->transaction->send($data);
     }
@@ -25,7 +37,7 @@ class Client extends BaseClient
     public function hash(string $content, string $privateKey)
     {
         $txHex = $this->client->CreateRawTokenPreCreateTx([
-            'name'         => $symbol,
+            'name' => $symbol,
         ], 'token');
 
         $data = $this->app->transaction->sign($privateKey, $txHex);
@@ -36,7 +48,7 @@ class Client extends BaseClient
     public function link(string $content, string $privateKey)
     {
         $txHex = $this->client->CreateRawTokenPreCreateTx([
-            'name'         => $symbol,
+            'name' => $symbol,
         ], 'token');
 
         $data = $this->app->transaction->sign($privateKey, $txHex);
@@ -44,7 +56,9 @@ class Client extends BaseClient
         return $this->app->transaction->send($data);
     }
 
-    function query(string $hash) {
+    function query(string $hash)
+    {
 
     }
+
 }

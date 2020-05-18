@@ -38,14 +38,13 @@ class Client extends BaseClient
      * @Author: <C.Jason>
      * @Date: 2020/4/30 22:50
      * @param array $addresses 要查询的地址列表
-     * @param string $execer token查询可用的余额 ，trade查询正在交易合约里的token
      * @param string $tokenSymbol token符号名称
      * @return array
      */
-    public function token(array $addresses, string $execer, string $tokenSymbol): array
+    public function token(array $addresses, string $tokenSymbol): array
     {
         return $this->client->GetTokenBalance([
-            'execer'      => $execer,
+            'execer'      => 'token',
             'tokenSymbol' => $tokenSymbol,
             'addresses'   => $addresses,
         ], 'token');
