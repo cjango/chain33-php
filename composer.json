@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Jason\\": "src/"
+            "Jason\\": "src/",
+            "GPBMetadata\\": "GPBMetadata/"
         }
     },
     "extra": {
