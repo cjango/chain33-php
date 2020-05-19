@@ -1,5 +1,7 @@
 syntax = "proto3";
-package types;
+
+package Jason.Chain33.Kernel.Protobuf;
+
 //后面如果有其他数据模型可继续往上面添加
 message Storage {
     oneof value {

@@ -19,9 +19,7 @@
     "autoload": {
         "psr-4": {
             "Jason\\": "src/"
-        },
-        "files": [
-        ]
+        }
     },
     "extra": {
         "laravel": {

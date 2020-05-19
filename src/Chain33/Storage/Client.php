@@ -3,6 +3,9 @@
 namespace Jason\Chain33\Storage;
 
 use Jason\Chain33\Kernel\BaseClient;
+use Jason\Chain33\Kernel\Protobuf\ContentOnlyNotaryStorage;
+use Jason\Chain33\Kernel\Protobuf\StorageAction;
+use Jason\Chain33\Kernel\Protobuf\Transaction;
 
 /**
  * Class Client
@@ -13,16 +16,16 @@ class Client extends BaseClient
 
     public function content(string $content, string $privateKey)
     {
-        $con = new \Types\ContentOnlyNotaryStorage();
+        $con = new ContentOnlyNotaryStorage();
         $con->setContent($content);
         $con->setKey('');
         $con->setOp(0);
 
-        $storage = new \Types\StorageAction();
+        $storage = new StorageAction();
         $storage->setContentStorage($con);
         $storage->setTy(1);
 
-        $trans = new \Types\Transaction();
+        $trans = new Transaction();
 
         $trans->setExecer('storage');
         $trans->setTo('1Af1JWXYVJwMrSkC7QpG4KVckNKgXmnhm4');

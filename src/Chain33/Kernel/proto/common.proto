@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package types;
+package Jason.Chain33.Kernel.Protobuf;
 
 message Reply {
     bool  isOk = 1;
