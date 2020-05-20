@@ -3,6 +3,7 @@
 namespace Jason\Chain33\Manage;
 
 use Jason\Chain33\Kernel\BaseClient;
+use Jason\Chain33\Kernel\Consts;
 
 /**
  * Class Client
@@ -10,7 +11,6 @@ use Jason\Chain33\Kernel\BaseClient;
  */
 class Client extends BaseClient
 {
-
     /**
      * Notes: 添加/删除一个token-finisher
      * @Author: <C.Jason>
@@ -22,7 +22,7 @@ class Client extends BaseClient
      * @param string $type       token-finisher , token-blacklist
      * @return mixed
      */
-    public function finisher(string $value, string $privateKey, string $op = 'add', string $type = 'token-finisher')
+    public function finisher(string $value, string $privateKey, string $op = Consts::TOKEN_OP_ADD, string $type = Consts::TOKEN_FINISHER)
     {
         $txHex = $this->client->CreateTransaction([
             'execer'     => 'manage',
@@ -46,7 +46,7 @@ class Client extends BaseClient
      * @Date  : 2020/5/2 21:43
      * @return mixed
      */
-    public function get($type = 'token-finisher')
+    public function get($type = Consts::TOKEN_FINISHER)
     {
         return $this->client->Query([
             'execer'   => 'manage',

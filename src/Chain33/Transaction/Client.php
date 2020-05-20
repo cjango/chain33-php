@@ -117,12 +117,12 @@ class Client extends BaseClient
      * Notes: 根据地址获取交易信息
      * @Author: <C.Jason>
      * @Date  : 2020/5/14 2:48 下午
-     * @param string $addr  要查询的账户地址
-     * @param int    $count 返回的数据条数
-     * @param int    $flag  查询的方向；0：正向查询，区块高度从低到高；-1：反向查询；
-     * @param int    $direction
-     * @param int    $height
-     * @param int    $index
+     * @param string $addr      要查询的账户地址
+     * @param int    $count     返回的数据条数
+     * @param int    $flag      交易类型；0：所有涉及到addr的交易； 1：addr作为发送方； 2：addr作为接收方；
+     * @param int    $direction 查询的方向；0：正向查询，区块高度从低到高；-1：反向查询；
+     * @param int    $height    交易所在的block高度，-1：表示从最新的开始向后取；大于等于0的值，从具体的高度+具体index开始取
+     * @param int    $index     交易所在block中的索引，取值0—100000
      * @return mixed
      */
     public function getTx(string $addr, int $count, int $flag = 0, int $direction = 0, int $height = -1, int $index = 0)
