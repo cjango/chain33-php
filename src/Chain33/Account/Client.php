@@ -15,7 +15,7 @@ class Client extends BaseClient
     /**
      * Notes: 本地生成私钥-钱包地址
      * @Author: <C.Jason>
-     * @Date: 2020/4/30 15:01
+     * @Date  : 2020/4/30 15:01
      * @return array
      */
     public function local(): array
@@ -24,43 +24,36 @@ class Client extends BaseClient
             'private_key_type' => OPENSSL_KEYTYPE_EC,
             'curve_name'       => 'secp256k1',
         ];
-        $res    = openssl_pkey_new($config);
-        openssl_pkey_export($res, $priv_key);
-        $keyDetail = openssl_pkey_get_details($res);
+        $pkey   = openssl_pkey_new($config);
+        $detail = openssl_pkey_get_details($pkey);
 
         return [
-            'privateKey' => bin2hex($keyDetail['ec']['d']),
-            'address'    => $this->getAddress($keyDetail),
+            'privateKey' => bin2hex($detail['ec']['d']),
+            'address'    => $this->getAddress($detail),
         ];
     }
 
     /**
      * Notes: 获取钱包地址
      * @Author: <C.Jason>
-     * @Date: 2020/4/30 15:00
-     * @param $keyDetail
+     * @Date  : 2020/4/30 15:00
+     * @param $detail
      * @return string
      */
-    protected function getAddress($keyDetail): string
+    protected function getAddress($detail): string
     {
-        $x = str_pad(bin2hex($keyDetail['ec']['x']), 64, '0', STR_PAD_LEFT);
-        $y = str_pad(bin2hex($keyDetail['ec']['y']), 64, '0', STR_PAD_LEFT);
-
-        if (gmp_strval(gmp_mod(gmp_init($y, 16), gmp_init(2, 10))) == 0) {
-            $derPubKey = '02' . $x;
+        $x = str_pad(bin2hex($detail['ec']['x']), 64, '0', STR_PAD_LEFT);
+        $y = bin2hex($detail['ec']['y']);
+        if (intval(substr($y, -1), 16) % 2 == 0) {
+            $pubKey = '02' . $x;
         } else {
-            $derPubKey = '03' . $x;
+            $pubKey = '03' . $x;
         }
-        // 比特币的地址算法
-        $sha256   = hash('sha256', hex2bin($derPubKey));
-        $ripem160 = hash('ripemd160', hex2bin($sha256));
-        // 加入区块链版本 00
-        $hex_with_prefix = $this->config['version'] . $ripem160;
-        // 校验码
-        $sha256   = hash('sha256', hex2bin($hex_with_prefix));
-        $checksum = hash('sha256', hex2bin($sha256));
 
-        $address = $hex_with_prefix . substr($checksum, 0, 8);
+        $ripem160    = hash('ripemd160', hex2bin(hash('sha256', hex2bin($pubKey))));
+        $with_prefix = $this->config['version'] . $ripem160;
+        $checksum    = hash('sha256', hex2bin(hash('sha256', hex2bin($with_prefix))));
+        $address     = $with_prefix . substr($checksum, 0, 8);
 
         return (new \StephenHill\Base58())->encode(hex2bin($address));
     }
@@ -114,8 +107,8 @@ class Client extends BaseClient
     /**
      * Notes: 导入私钥
      * @Author: <C.Jason>
-     * @Date: 2020/4/30 17:21
-     * @param string $lable 账户标签
+     * @Date  : 2020/4/30 17:21
+     * @param string $lable   账户标签
      * @param string $privkey 账户私钥
      * @return string
      */
