@@ -22,7 +22,7 @@ class Client
         $this->config = $app->config;
 
         $this->client = new Guzzle([
-            'base_uri' => $this->config['base_uri'],
+            'base_uri' => $this->config['base_uri'] . ':' . $this->config['base_port'],
         ]);
     }
 

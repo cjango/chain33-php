@@ -11,18 +11,18 @@ use Jason\Chain33\Kernel\Consts;
  */
 class Client extends BaseClient
 {
+
     /**
      * Notes: 添加/删除一个token-finisher
      * @Author: <C.Jason>
      * @Date  : 2020/5/2 21:41
-     * @param string $key        目前支持token-finisher，token-blacklist
-     * @param string $value      对应地址
-     * @param string $privateKey 管理员私钥
-     * @param string $op         操作方法，add 添加，delete 删除
-     * @param string $type       token-finisher , token-blacklist
+     * @param string $key   目前支持token-finisher，token-blacklist
+     * @param string $value 对应地址
+     * @param string $op    操作方法，add 添加，delete 删除
+     * @param string $type  token-finisher , token-blacklist
      * @return mixed
      */
-    public function finisher(string $value, string $privateKey, string $op = Consts::TOKEN_OP_ADD, string $type = Consts::TOKEN_FINISHER)
+    public function finisher(string $value, string $op = Consts::OP_ADD, string $type = Consts::TOKEN_FINISHER)
     {
         $txHex = $this->client->CreateTransaction([
             'execer'     => 'manage',
@@ -35,7 +35,7 @@ class Client extends BaseClient
             ],
         ]);
 
-        $data = $this->app->transaction->sign($privateKey, $txHex);
+        $data = $this->app->transaction->sign($this->config['superManager']['privateKey'], $txHex);
 
         return $this->app->transaction->send($data);
     }
