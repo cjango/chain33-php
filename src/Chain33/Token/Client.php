@@ -15,19 +15,21 @@ class Client extends BaseClient
     /**
      * Notes: 发行TOKEN
      * @Author: <C.Jason>
-     * @Date  : 2020/5/25 11:04 上午
-     * @param string $symbol   token标记符，最大长度是16个字符，且必须为大写字符和数字
-     * @param int    $total    发行总量
-     * @param string $owner    token拥有者地址
-     * @param int    $category token属性类别， 0 为普通token， 1 可增发和燃烧
+     * @Date  : 2020/5/25 3:59 下午
+     * @param string $name         token 名称
+     * @param string $symbol       token标记符，最大长度是16个字符，且必须为大写字符和数字
+     * @param string $introduction token 简介
+     * @param int    $total        发行总量
+     * @param string $owner        token拥有者地址
+     * @param int    $category     token属性类别， 0 为普通token， 1 可增发和燃烧
      * @return mixed
      */
-    public function publish(string $symbol, int $total, string $owner, int $category = Consts::TOKEN_MINT_BURN)
+    public function publish(string $name, string $symbol, string $introduction, int $total, string $owner, int $category = Consts::TOKEN_MINT_BURN)
     {
         $txHex = $this->client->CreateRawTokenPreCreateTx([
-            'name'         => $symbol,
+            'name'         => $name,
             'symbol'       => $symbol,
-            'introduction' => $symbol,
+            'introduction' => $introduction,
             'total'        => $total,
             'price'        => 0,
             'category'     => $category,
