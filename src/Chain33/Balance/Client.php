@@ -54,13 +54,17 @@ class Client extends BaseClient
      * Notes: 查询地址所有合约地址余额
      * @Author: <C.Jason>
      * @Date  : 2020/4/30 22:53
-     * @param string $addr 要查询的地址
+     * @param string $addr   要查询的地址
+     * @param string $symbol 代币名称
      * @return array|null
      */
-    public function all(string $addr): ?array
+    public function all(string $addr, string $symbol): ?array
     {
         return $this->client->GetAllExecBalance([
-            'addr' => $addr,
+            'addr'         => $addr,
+            'execer'       => 'token',
+            'asset_exec'   => 'token',
+            'asset_symbol' => $symbol,
         ]);
     }
 

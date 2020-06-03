@@ -21,11 +21,13 @@ class Client extends BaseClient
      * @param string $privkey
      * @return string
      */
-    public function transfer(string $to, int $amount, int $fee, string $privkey): string
+    public function transfer(string $to, int $amount, int $fee, string $privkey, string $exectr = '', string $symbol = ''): string
     {
-        $txHex = $this->createRaw($to, $amount, $fee, 'coins', '', false);
+        $isToken = !empty($symbol) ? true : false;
 
-        $data = $this->sign($privkey, $txHex, $fee);
+        $txHex = $this->createRaw($to, $amount, $fee, $exectr, $symbol, $isToken);
+
+        $data = $this->sign($privkey, $txHex);
 
         return $this->send($data);
     }

@@ -28,7 +28,7 @@ class Client extends BaseClient
         $detail = openssl_pkey_get_details($pkey);
 
         return [
-            'privateKey' => bin2hex($detail['ec']['d']),
+            'privateKey' => '0x' . bin2hex($detail['ec']['d']),
             'address'    => $this->getAddress($detail),
         ];
     }
