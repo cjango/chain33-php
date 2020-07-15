@@ -172,18 +172,19 @@ class Client extends BaseClient
      * Notes: token的增发
      * @Author: <C.Jason>
      * @Date  : 2020/5/20 3:44 下午
-     * @param string $symbol token的标记符
-     * @param int    $amount 增发token的数量
+     * @param string $symbol     token的标记符
+     * @param int    $amount     增发token的数量
+     * @param string $privateKey 拥有者的私钥
      * @return mixed
      */
-    public function mint(string $symbol, int $amount)
+    public function mint(string $symbol, int $amount, string $privateKey)
     {
         $txHex = $this->client->CreateRawTokenMintTx([
             'symbol' => $symbol,
             'amount' => $amount,
         ], 'token');
 
-        $data = $this->app->transaction->sign($this->config['superManager']['privateKey'], $txHex);
+        $data = $this->app->transaction->sign($privateKey, $txHex);
 
         return $this->app->transaction->send($data);
     }
@@ -192,18 +193,19 @@ class Client extends BaseClient
      * Notes: token的燃烧
      * @Author: <C.Jason>
      * @Date  : 2020/5/20 3:44 下午
-     * @param string $symbol token的标记符
-     * @param int    $amount 燃烧token的数量
+     * @param string $symbol     token的标记符
+     * @param int    $amount     燃烧token的数量
+     * @param string $privateKey 拥有者的私钥
      * @return mixed
      */
-    public function burn(string $symbol, int $amount)
+    public function burn(string $symbol, int $amount, string $privateKey)
     {
         $txHex = $this->client->CreateRawTokenBurnTx([
             'symbol' => $symbol,
             'amount' => $amount,
         ], 'token');
 
-        $data = $this->app->transaction->sign($this->config['superManager']['privateKey'], $txHex);
+        $data = $this->app->transaction->sign($privateKey, $txHex);
 
         return $this->app->transaction->send($data);
     }
