@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static Chain33\Account\Client Account
  * @method static Chain33\Balance\Client Balance
  * @method static Chain33\Chain\Client Chain
+ * @method static Chain33\Evm\Client Evm
  * @method static Chain33\Manage\Client Manage
  * @method static Chain33\Miner\Client Miner
  * @method static Chain33\Net\Client Net

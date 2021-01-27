@@ -10,6 +10,7 @@ use Pimple\Container;
  * @method static Account\Client Account
  * @method static Balance\Client Balance
  * @method static Chain\Client Chain
+ * @method static Evm\Client Evm
  * @method static Miner\Client Miner
  * @method static Net\Client Net
  * @method static Storage\Client Storage

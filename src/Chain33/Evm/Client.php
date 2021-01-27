@@ -30,6 +30,7 @@ class Client extends BaseClient
                 'code'     => $code,
                 'abi'      => $abi,
                 'alias'    => $alias,
+                'fee'      => 3000000,
             ],
         ]);
     }
@@ -114,12 +115,12 @@ class Client extends BaseClient
      * @param  string  $caller   本次调用的发起者，如果不填写则认为EVM合约自身发起的调用
      * @return mixed
      */
-    public function readonlyCall(string $address, string $input, string $caller)
+    public function readonly(string $address, string $input, string $caller)
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
-            'actionName' => 'Query',
-            'payload'    => [
+        return $this->client->Query([
+            'execer'   => 'evm',
+            'funcName' => 'Query',
+            'payload'  => [
                 'address' => $address,
                 'input'   => $input,
                 'caller'  => $caller,
@@ -138,17 +139,13 @@ class Client extends BaseClient
      * @param  int     $amount  合约调用时，如果需要传递金额，通过这个参数
      * @return int              本次交易需要消耗的gas值
      */
-    public function estimateGas(string $to, string $code, string $abi, string $caller, int $amount): int
+    public function estimateGas(string $code): int
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
-            'actionName' => 'EstimateGas',
-            'payload'    => [
-                'to'     => $to,
-                'code'   => $code,
-                'abi'    => $abi,
-                'caller' => $caller,
-                'amount' => $amount,
+        return $this->client->Query([
+            'execer'   => 'evm',
+            'funcName' => 'EstimateGas',
+            'payload'  => [
+                'code' => $code,
             ],
         ])['gas'];
     }
@@ -168,10 +165,10 @@ class Client extends BaseClient
      */
     public function checkAddr(string $addr): array
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
-            'actionName' => 'CheckAddrExists',
-            'payload'    => [
+        return $this->client->Query([
+            'execer'   => 'evm',
+            'funcName' => 'CheckAddrExists',
+            'payload'  => [
                 'addr' => $addr,
             ],
         ]);
@@ -188,10 +185,10 @@ class Client extends BaseClient
      */
     public function queryABI(string $address): array
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
-            'actionName' => 'QueryABI',
-            'payload'    => [
+        return $this->client->Query([
+            'execer'   => 'evm',
+            'funcName' => 'QueryABI',
+            'payload'  => [
                 'address' => $address,
             ],
         ]);
@@ -206,10 +203,10 @@ class Client extends BaseClient
      */
     public function evmDebug(int $optype): bool
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
-            'actionName' => 'EvmDebug',
-            'payload'    => [
+        return $this->client->Query([
+            'execer'   => 'evm',
+            'funcName' => 'EvmDebug',
+            'payload'  => [
                 'optype' => $optype,
             ],
         ])['debugStatus'];
