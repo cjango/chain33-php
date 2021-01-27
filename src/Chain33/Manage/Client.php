@@ -16,10 +16,9 @@ class Client extends BaseClient
      * Notes: 添加/删除一个token-finisher
      * @Author: <C.Jason>
      * @Date  : 2020/5/2 21:41
-     * @param string $key   目前支持token-finisher，token-blacklist
-     * @param string $value 对应地址
-     * @param string $op    操作方法，add 添加，delete 删除
-     * @param string $type  token-finisher , token-blacklist
+     * @param  string  $value  对应地址
+     * @param  string  $op     操作方法，add 添加，delete 删除
+     * @param  string  $type   token-finisher , token-blacklist
      * @return mixed
      */
     public function finisher(string $value, string $op = Consts::OP_ADD, string $type = Consts::TOKEN_FINISHER)
@@ -44,6 +43,7 @@ class Client extends BaseClient
      * Notes: 查看finish apprv列表
      * @Author: <C.Jason>
      * @Date  : 2020/5/2 21:43
+     * @param  string  $type  操作标识符
      * @return mixed
      */
     public function get($type = Consts::TOKEN_FINISHER)

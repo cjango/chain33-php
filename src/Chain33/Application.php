@@ -11,8 +11,10 @@ use Pimple\Container;
  * @method static Balance\Client Balance
  * @method static Chain\Client Chain
  * @method static Evm\Client Evm
+ * @method static Mempool\Client Mempool
  * @method static Miner\Client Miner
  * @method static Net\Client Net
+ * @method static Oracle\Client Oracle
  * @method static Storage\Client Storage
  * @method static Token\Client Token
  * @method static Transaction\Client Transaction
@@ -22,8 +24,6 @@ use Pimple\Container;
  */
 class Application extends Container
 {
-
-    use AllianceTrait;
 
     /**
      * 要注册的服务类
@@ -36,8 +36,10 @@ class Application extends Container
         Evm\ServiceProvider::class,
         Kernel\ServiceProvider::class,
         Manage\ServiceProvider::class,
+        Mempool\ServiceProvider::class,
         Miner\ServiceProvider::class,
         Net\ServiceProvider::class,
+        Oracle\ServiceProvider::class,
         Storage\ServiceProvider::class,
         Token\ServiceProvider::class,
         Transaction\ServiceProvider::class,
