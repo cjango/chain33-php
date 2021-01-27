@@ -32,6 +32,7 @@ class Application extends Container
         Account\ServiceProvider::class,
         Balance\ServiceProvider::class,
         Chain\ServiceProvider::class,
+        Evm\ServiceProvider::class,
         Kernel\ServiceProvider::class,
         Manage\ServiceProvider::class,
         Miner\ServiceProvider::class,
@@ -69,10 +70,10 @@ class Application extends Container
      * 获取服务 $this->account->do()
      * @Author: <C.Jason>
      * @Date  : 2020/3/17 20:44 下午
-     * @param $name 服务名称
+     * @param  string  $name  服务名称
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         return $this->offsetGet(strtolower($name));
     }
@@ -81,11 +82,11 @@ class Application extends Container
      * Notes: 获取服务 $this->account($args)->do()
      * @Author: <C.Jason>
      * @Date  : 2020/3/17 20:44 下午
-     * @param $name 服务名称
-     * @param $arguments
+     * @param  string  $name  服务名称
+     * @param          $arguments
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, $arguments)
     {
         return $this->offsetGet(strtolower($name));
     }
