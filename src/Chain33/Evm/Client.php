@@ -15,14 +15,16 @@ class Client extends BaseClient
      * Notes   : 部署合约
      * @Date   : 2021/1/27 2:12 下午
      * @Author : < Jason.C >
-     * @param  string  $code   部署合约的合约代码
-     * @param  string  $abi    部署合约的ABI代码
-     * @param  string  $alias  部署新合约时的合约别名，方便识别不同合约
+     * @param  string  $code        部署合约的合约代码
+     * @param  string  $abi         部署合约的ABI代码
+     * @param  string  $alias       部署新合约时的合约别名，方便识别不同合约
+     * @param  string  $privateKey  创建合约的用户的私钥
+     * @param  int     $fee         交易手续费，这里不能设置为0，要大于合约的gas消耗
      * @return string
      */
-    public function deploy(string $code, string $abi, string $alias): string
+    public function deploy(string $code, string $abi, string $alias, string $privateKey, int $fee = 300000): string
     {
-        return $this->client->CreateTransaction([
+        $hex = $this->client->CreateTransaction([
             'execer'     => 'evm',
             'actionName' => 'CreateCall',
             'payload'    => [
@@ -33,6 +35,10 @@ class Client extends BaseClient
                 'fee'      => 3000000,
             ],
         ]);
+
+        $data = $this->app->transaction()->sign($privateKey, $hex, '300s', $fee);
+
+        return $this->app->transaction()->send($data);
     }
 
     /**
