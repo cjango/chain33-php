@@ -2,7 +2,6 @@
 
 namespace Jason\Chain33\Account;
 
-use Illuminate\Support\Collection;
 use Jason\Chain33\Kernel\BaseClient;
 use StephenHill\Base58;
 
@@ -14,12 +13,12 @@ class Client extends BaseClient
 {
 
     /**
-     * Notes   : 本地生成私钥-钱包地址
+     * Notes   : 本地生成 钱包地址 与 私钥
      * @Date   : 2021/1/28 10:20 上午
      * @Author : < Jason.C >
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    public function local(): Collection
+    public function local(): array
     {
         $config = [
             'private_key_type' => OPENSSL_KEYTYPE_EC,
@@ -28,20 +27,20 @@ class Client extends BaseClient
         $pkey   = openssl_pkey_new($config);
         $detail = openssl_pkey_get_details($pkey);
 
-        return new Collection([
-            'privateKey' => '0x' . strtoupper(bin2hex($detail['ec']['d'])),
+        return [
             'address'    => $this->getAddress($detail),
-        ]);
+            'privateKey' => '0x' . strtoupper(bin2hex($detail['ec']['d'])),
+        ];
     }
 
     /**
      * Notes   : 获取钱包地址
-     * @Author : <C.Jason>
-     * @Date   : 2020/4/30 15:00
-     * @param $detail
+     * @Date   : 2021/1/28 11:16 上午
+     * @Author : < Jason.C >
+     * @param  array  $detail  私钥信息
      * @return string
      */
-    protected function getAddress($detail): string
+    private function getAddress(array $detail): string
     {
         $x = str_pad(bin2hex($detail['ec']['x']), 64, '0', STR_PAD_LEFT);
         $y = bin2hex($detail['ec']['y']);
@@ -76,51 +75,51 @@ class Client extends BaseClient
     }
 
     /**
-     * Notes   : 获取账户列表
-     * @Author : <C.Jason>
-     * @Date   : 2020/3/18 21:34
-     * @param  bool  $withoutBalance  返回 label 和 addr 信息
+     * Notes   : 修改账户的标签
+     * @Date   : 2021/1/28 11:48 上午
+     * @Author : < Jason.C >
+     * @param  string  $addr   账户地址
+     * @param  string  $label  待设置的标签
      * @return array
      */
-    public function get(bool $withoutBalance = false): array
+    public function setLabel(string $addr, string $label): array
     {
-        return $this->client->GetAccounts([
-            'withoutBalance' => false,
-        ])['wallets'];
+        return $this->client->SetLabl([
+            'addr'  => $addr,
+            'label' => $label,
+        ]);
     }
 
     /**
-     * Notes   : 合并账户余额
-     * @Author : <C.Jason>
-     * @Date   : 2020/3/18 21:35
-     * @param  string  $to  合并钱包上的所有余额到一个账户地址
-     * @return array|null
+     * Notes   : 获取账户列表
+     * @Date   : 2021/1/28 11:20 上午
+     * @Author : < Jason.C >
+     * @param  bool  $withoutBalance  false， 将返回account 的帐号信息。 为true 则返回 label 和 addr 信息， 其他信息为 0
+     * @return array
      */
-    public function merge(string $to): ?array
+    public function get(bool $withoutBalance = true): array
     {
-        $this->unlock();
-
-        return $this->client->MergeBalance([
-            'to' => $to,
-        ])['hashes'];
+        return $this->client->GetAccounts([
+            'withoutBalance' => $withoutBalance,
+        ])['wallets'];
     }
 
     /**
      * Notes   : 导入私钥
      * @Author : <C.Jason>
      * @Date   : 2020/4/30 17:21
-     * @param  string  $lable    账户标签
-     * @param  string  $privkey  账户私钥
-     * @return string
+     * @param  string  $label       账户标签
+     * @param  string  $privateKey  账户私钥
+     * @return array
      */
-    public function import(string $lable, string $privkey): string
+    public function import(string $label, string $privateKey): array
     {
         $this->unlock();
 
         return $this->client->ImportPrivkey([
-            'privkey' => $privkey,
-            'label'   => $lable,
-        ])['acc']['addr'];
+            'privkey' => $privateKey,
+            'label'   => $label,
+        ]);
     }
 
     /**
@@ -128,15 +127,20 @@ class Client extends BaseClient
      * @Author : <C.Jason>
      * @Date   : 2020/3/18 21:36
      * @param  string  $addr  待导出私钥的账户地址
-     * @return string
+     * @return array
      */
-    public function dump(string $addr): string
+    public function export(string $addr): array
     {
         $this->unlock();
 
-        return $this->client->DumpPrivkey([
+        $privateKey = $this->client->DumpPrivkey([
             'data' => $addr,
         ])['data'];
+
+        return [
+            'address'    => $addr,
+            'privateKey' => str_replace('0X', '0x', strtoupper($privateKey)),
+        ];
     }
 
 }
