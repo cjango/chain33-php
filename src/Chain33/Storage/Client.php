@@ -21,9 +21,9 @@ class Client extends BaseClient
      * Notes: 明文存证
      * @Author: <C.Jason>
      * @Date  : 2020/5/19 3:43 下午
-     * @param string $content
-     * @param string $to
-     * @param string $privateKey
+     * @param  string  $content
+     * @param  string  $to
+     * @param  string  $privateKey
      * @return mixed
      */
     public function content(string $content, string $to, string $privateKey)
@@ -42,9 +42,9 @@ class Client extends BaseClient
      * Notes: Hash存证
      * @Author: <C.Jason>
      * @Date  : 2020/5/19 3:43 下午
-     * @param string $hash
-     * @param string $to
-     * @param string $privateKey
+     * @param  string  $hash
+     * @param  string  $to
+     * @param  string  $privateKey
      * @return mixed
      */
     public function hash(string $hash, string $to, string $privateKey)
@@ -63,10 +63,10 @@ class Client extends BaseClient
      * Notes: 链接存证
      * @Author: <C.Jason>
      * @Date  : 2020/5/19 3:43 下午
-     * @param string $link
-     * @param string $content
-     * @param string $to
-     * @param string $privateKey
+     * @param  string  $link
+     * @param  string  $content
+     * @param  string  $to
+     * @param  string  $privateKey
      * @return mixed
      */
     public function link(string $link, string $content, string $to, string $privateKey)
@@ -86,7 +86,7 @@ class Client extends BaseClient
      * Notes: 存证结果查询
      * @Author: <C.Jason>
      * @Date  : 2020/5/19 3:46 下午
-     * @param string $hash
+     * @param  string  $hash
      * @return false|false[]|string|string[]
      */
     public function query(string $hash)
@@ -134,9 +134,9 @@ class Client extends BaseClient
      * Notes: 发送存证数据
      * @Author: <C.Jason>
      * @Date  : 2020/5/19 3:44 下午
-     * @param \Jason\Chain33\Kernel\Protobuf\StorageAction $storage
-     * @param string                                       $to
-     * @param string                                       $privateKey
+     * @param  \Jason\Chain33\Kernel\Protobuf\StorageAction  $storage
+     * @param  string                                        $to
+     * @param  string                                        $privateKey
      * @return mixed
      */
     private function sendTransaction(StorageAction $storage, string $to, string $privateKey)
