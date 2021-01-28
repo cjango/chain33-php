@@ -15,12 +15,13 @@ class Client extends BaseClient
      * Notes: 转账（三合一）
      * @Author: <C.Jason>
      * @Date  : 2020/5/2 21:34
-     * @param  string  $to
-     * @param  int     $amount
-     * @param  int     $fee
-     * @param  string  $privkey
-     * @param  string  $exectr
-     * @param  string  $symbol
+     * @param  string  $to       发送到地址
+     * @param  int     $amount   转账金额
+     * @param  int     $fee      手续费
+     * @param  string  $privkey  私钥
+     * @param  string  $exectr   执行器
+     * @param  string  $symbol   代币
+     * @param  string  $node     备注
      * @return string
      */
     public function transfer(
@@ -29,11 +30,12 @@ class Client extends BaseClient
         int $fee,
         string $privkey,
         string $exectr = '',
-        string $symbol = ''
+        string $symbol = '',
+        string $node = ''
     ): string {
         $isToken = !empty($symbol);
 
-        $txHex = $this->createRaw($to, $amount, $fee, $exectr, $symbol, $isToken);
+        $txHex = $this->createRaw($to, $amount, $fee, $exectr, $symbol, $isToken, false, '', $node);
 
         $data = $this->sign($privkey, $txHex);
 
