@@ -20,9 +20,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static Chain33\Token\Client Token
  * @method static Chain33\Transaction\Client Transaction
  * @method static Chain33\Wallet\Client Wallet
- * 组合的请求方式
- * @method static isSync()
- * @method static newAccountLocal()
  */
 class Chain33 extends Facade
 {
