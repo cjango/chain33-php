@@ -20,10 +20,10 @@ class BaseClient
 
     /**
      * 解锁钱包
-     * @param bool $ticket 只解锁ticket
+     * @param  bool  $ticket  只解锁ticket
      * @return void
      */
-    protected function unlock(bool $ticket = true): void
+    protected function unlock(bool $ticket = false): void
     {
         $this->client->UnLock([
             'passwd'         => $this->config['password'],
