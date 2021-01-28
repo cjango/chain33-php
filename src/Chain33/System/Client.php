@@ -1,6 +1,6 @@
 <?php
 
-namespace Jason\Chain33\Net;
+namespace Jason\Chain33\System;
 
 use Jason\Chain33\Kernel\BaseClient;
 
@@ -12,20 +12,20 @@ class Client extends BaseClient
 {
 
     /**
-     * Notes: 获取远程节点列表
-     * @Author: <C.Jason>
-     * @Date  : 2020/4/30 16:05
+     * Notes   : 获取远程节点列表
+     * @Author : <C.Jason>
+     * @Date   : 2020/4/30 16:05
      * @return array
      */
-    public function peer(): array
+    public function peers(): array
     {
         return $this->client->GetPeerInfo()['peers'];
     }
 
     /**
-     * Notes: 查询节点状态
-     * @Author: <C.Jason>
-     * @Date  : 2020/4/30 16:04
+     * Notes   : 查询节点状态
+     * @Author : <C.Jason>
+     * @Date   : 2020/4/30 16:04
      * @return array
      */
     public function info(): array
@@ -34,23 +34,23 @@ class Client extends BaseClient
     }
 
     /**
-     * Notes: 查询时间状态
-     * @Author: <C.Jason>
-     * @Date  : 2020/4/30 16:01
+     * Notes   : 查询时间状态
+     * @Author : <C.Jason>
+     * @Date   : 2020/4/30 16:01
      * @return array
      */
-    public function timeStatus(): array
+    public function time(): array
     {
         return $this->client->GetTimeStatus();
     }
 
     /**
-     * Notes: 查询同步状态
-     * @Author: <C.Jason>
-     * @Date  : 2020/4/30 17:32
+     * Notes   : 查询同步状态
+     * @Author : <C.Jason>
+     * @Date   : 2020/4/30 17:32
      * @return bool
      */
-    public function isSync(): bool
+    public function sync(): bool
     {
         return $this->client->IsSync();
     }
@@ -59,9 +59,9 @@ class Client extends BaseClient
      * Notes   : 获取主代币信息
      * @Date   : 2021/1/27 10:35 下午
      * @Author : < Jason.C >
-     * @return mixed
+     * @return string
      */
-    public function coin()
+    public function coin(): string
     {
         return $this->client->GetCoinSymbol()['data'];
     }
