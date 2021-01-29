@@ -22,7 +22,7 @@ class Client extends BaseClient
      * @param  int     $fee         交易手续费，这里不能设置为0，要大于合约的gas消耗
      * @return string
      */
-    public function deploy(string $code, string $abi, string $alias, string $privateKey, int $fee = 300000): string
+    public function deploy(string $code, string $abi, string $alias, string $privateKey, int $fee = 3000000): string
     {
         $hex = $this->client->CreateTransaction([
             'execer'     => 'evm',
@@ -32,7 +32,7 @@ class Client extends BaseClient
                 'code'     => $code,
                 'abi'      => $abi,
                 'alias'    => $alias,
-                'fee'      => 3000000,
+                'fee'      => $fee,
             ],
         ]);
 
