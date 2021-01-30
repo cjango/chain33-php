@@ -19,11 +19,18 @@ class Client extends BaseClient
      * @param  string  $abi         部署合约的ABI代码
      * @param  string  $alias       部署新合约时的合约别名，方便识别不同合约
      * @param  string  $privateKey  创建合约的用户的私钥
+     * @param  string  $note        本次交易的备注信息
      * @param  int     $fee         交易手续费，这里不能设置为0，要大于合约的gas消耗
      * @return string
      */
-    public function deploy(string $code, string $abi, string $alias, string $privateKey, int $fee = 3000000): string
-    {
+    public function deploy(
+        string $code,
+        string $abi,
+        string $alias,
+        string $privateKey,
+        string $note = '',
+        int $fee = 3000000
+    ): string {
         $hex = $this->client->CreateTransaction([
             'execer'     => 'evm',
             'actionName' => 'CreateCall',
@@ -32,6 +39,7 @@ class Client extends BaseClient
                 'code'     => $code,
                 'abi'      => $abi,
                 'alias'    => $alias,
+                'note'     => $note,
                 'fee'      => $fee,
             ],
         ]);
@@ -45,25 +53,31 @@ class Client extends BaseClient
      * Notes   : 调用合约
      * @Date   : 2021/1/27 2:17 下午
      * @Author : < Jason.C >
-     * @param  string  $name    调用的合约名称
-     * @param  string  $abi     合约的ABI代码
-     * @param  int     $amount  合约调用时，如果需要传递金额，通过这个参数
-     * @param  string  $note    本次交易的备注信息
+     * @param  string  $name        调用的合约名称
+     * @param  string  $abi         合约的ABI代码
+     * @param  string  $privateKey  调用合约的签名
+     * @param  string  $note        本次交易的备注信息
+     * @param  int     $fee         交易手续费，这里不能设置为0，要大于合约的gas消耗
      * @return mixed
      */
-    public function invoking(string $name, string $abi, int $amount = 0, string $note = '')
+    public function invoking(string $name, string $abi, string $privateKey, string $note = '', int $fee = 3000000)
     {
-        return $this->client->CreateTransaction([
-            'execer'     => 'evm',
+        $hex = $this->client->CreateTransaction([
+            'execer'     => $name,
+            // 这里调用合约的时候，execer必须使用合约名称，否则会失败？
             'actionName' => 'CreateCall',
             'payload'    => [
                 'isCreate' => false,
                 'name'     => $name,
                 'abi'      => $abi,
                 'note'     => $note,
-                'amount'   => $amount,
+                'fee'      => $fee,
             ],
         ]);
+
+        $data = $this->app->transaction()->sign($privateKey, $hex, '300s', $fee);
+
+        return $this->app->transaction()->send($data);
     }
 
     /**
@@ -121,7 +135,7 @@ class Client extends BaseClient
      * @param  string  $caller   本次调用的发起者，如果不填写则认为EVM合约自身发起的调用
      * @return mixed
      */
-    public function readonly(string $address, string $input, string $caller)
+    public function readonly(string $address, string $input, string $caller = '')
     {
         return $this->client->Query([
             'execer'   => 'evm',
@@ -145,7 +159,7 @@ class Client extends BaseClient
      * @param  int     $amount  合约调用时，如果需要传递金额，通过这个参数
      * @return int              本次交易需要消耗的gas值
      */
-    public function estimateGas(string $code): int
+    public function estimateGas(string $code, string $abi): int
     {
         return $this->client->Query([
             'execer'   => 'evm',
