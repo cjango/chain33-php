@@ -19,7 +19,7 @@ class Client extends BaseClient
      * @param  int     $amount   转账金额
      * @param  string  $privkey  私钥
      * @param  string  $symbol   代币
-     * @param  string  $node     备注
+     * @param  string  $note     备注
      * @return string
      */
     public function transfer(
@@ -27,11 +27,11 @@ class Client extends BaseClient
         int $amount,
         string $privkey,
         string $symbol = '',
-        string $node = ''
+        string $note = ''
     ): string {
         $isToken = !empty($symbol);
 
-        $txHex = $this->createRaw($to, $amount, 0, '', $symbol, $isToken, false, '', $node);
+        $txHex = $this->createRaw($to, $amount, 0, '', $symbol, $isToken, false, '', $note);
 
         $data = $this->sign($privkey, $txHex);
 

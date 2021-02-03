@@ -56,12 +56,19 @@ class Client extends BaseClient
      * @param  string  $name        调用的合约名称
      * @param  string  $abi         合约的ABI代码
      * @param  string  $privateKey  调用合约的签名
+     * @param  int     $amount      合约调用时，如果需要传递金额，通过这个参数
      * @param  string  $note        本次交易的备注信息
      * @param  int     $fee         交易手续费，这里不能设置为0，要大于合约的gas消耗
-     * @return mixed
+     * @return string
      */
-    public function invoking(string $name, string $abi, string $privateKey, string $note = '', int $fee = 3000000)
-    {
+    public function invoking(
+        string $name,
+        string $abi,
+        string $privateKey,
+        int $amount = 0,
+        string $note = '',
+        int $fee = 3000000
+    ): string {
         $hex = $this->client->CreateTransaction([
             'execer'     => $name,
             // 这里调用合约的时候，execer必须使用合约名称，否则会失败？
@@ -70,6 +77,7 @@ class Client extends BaseClient
                 'isCreate' => false,
                 'name'     => $name,
                 'abi'      => $abi,
+                'amount'   => $amount,
                 'note'     => $note,
                 'fee'      => $fee,
             ],
@@ -78,6 +86,88 @@ class Client extends BaseClient
         $data = $this->app->transaction()->sign($privateKey, $hex, '300s', $fee);
 
         return $this->app->transaction()->send($data);
+    }
+
+    /**
+     * Notes   : 转账到合约
+     * @Date   : 2021/2/3 11:15 上午
+     * @Author : < Jason.C >
+     * @param  string  $addr         合约地址
+     * @param  string  $name         合约名称
+     * @param  int     $amount       转账金额
+     * @param  string  $privkey      私钥
+     * @param  string  $tokenSymbol  代币种类
+     * @return string
+     */
+    public function transfer(string $addr, string $name, int $amount, string $privkey, string $tokenSymbol = ''): string
+    {
+        $isToken = !empty($tokenSymbol);
+
+        $txHex = $this->client->CreateRawTransaction([
+            'to'          => $addr,
+            'amount'      => $amount,
+            'fee'         => 0,
+            'note'        => '',
+            'isToken'     => $isToken,
+            'isWithdraw'  => false,
+            'tokenSymbol' => $tokenSymbol,
+            'execName'    => $name,
+            'execer'      => $this->parseParaName($name),
+        ]);
+
+        $data = $this->app->transaction()->sign($privkey, $txHex);
+
+        return $this->app->transaction()->send($data);
+    }
+
+    /**
+     * Notes   : 从合约中提款
+     * @Date   : 2021/2/3 11:15 上午
+     * @Author : < Jason.C >
+     * @param  string  $addr         合约地址
+     * @param  string  $name         合约名称
+     * @param  int     $amount       转账金额
+     * @param  string  $privkey      私钥
+     * @param  string  $tokenSymbol  代币种类
+     * @return string
+     */
+    public function withdraw(string $addr, string $name, int $amount, string $privkey, string $tokenSymbol = ''): string
+    {
+        $isToken = !empty($tokenSymbol);
+
+        $txHex = $this->client->CreateRawTransaction([
+            'to'          => $addr,
+            'amount'      => $amount,
+            'fee'         => 0,
+            'note'        => '',
+            'isToken'     => $isToken,
+            'isWithdraw'  => true,
+            'tokenSymbol' => $tokenSymbol,
+            'execName'    => $name,
+            'execer'      => $this->parseParaName($name),
+        ]);
+
+        $data = $this->app->transaction()->sign($privkey, $txHex);
+
+        return $this->app->transaction()->send($data);
+    }
+
+    /**
+     * Notes   : 解析平行链的执行器名称
+     * @Date   : 2021/2/3 11:24 上午
+     * @Author : < Jason.C >
+     * @param  string  $name
+     * @return string
+     */
+    private function parseParaName(string $name): string
+    {
+        if (count(explode('.', $name)) > 5) {
+            $execer = implode('.', array_slice(explode('.', $name), 0, 3)) . '.coins';
+        } else {
+            $execer = 'coins';
+        }
+
+        return $execer;
     }
 
     /**
@@ -133,9 +223,9 @@ class Client extends BaseClient
      * @param  string  $address  合约地址
      * @param  string  $input    abi方法及参数
      * @param  string  $caller   本次调用的发起者，如果不填写则认为EVM合约自身发起的调用
-     * @return mixed
+     * @return string
      */
-    public function readonly(string $address, string $input, string $caller = '')
+    public function readonly(string $address, string $input, string $caller = ''): string
     {
         return $this->client->Query([
             'execer'   => 'evm',
@@ -152,11 +242,8 @@ class Client extends BaseClient
      * Notes   : 估算合约调用Gas消耗
      * @Date   : 2021/1/27 1:53 下午
      * @Author : < Jason.C >
-     * @param  string  $to      目标地址，如果为创建合约，这里留空，如果为调用合约这里填写合约地址
-     * @param  string  $code    需要部署或调用的合约代码，如果是部署合约，本字段必填
-     * @param  string  $abi     需要部署或调用的合约ABI代码
-     * @param  string  $caller  本次调用的发起者，如果不填写则认为EVM合约自身发起的调用
-     * @param  int     $amount  合约调用时，如果需要传递金额，通过这个参数
+     * @param  string  $code  需要部署或调用的合约代码，如果是部署合约，本字段必填
+     * @param  string  $abi   需要部署或调用的合约ABI代码
      * @return int              本次交易需要消耗的gas值
      */
     public function estimateGas(string $code, string $abi): int
