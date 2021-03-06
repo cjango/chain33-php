@@ -195,7 +195,7 @@ class Client extends BaseClient
             'direction' => $direction,
             'height'    => $height,
             'index'     => $index,
-        ]);
+        ])['txInfos'];
     }
 
     /**

@@ -165,7 +165,7 @@ class Client extends BaseClient
                 'index'     => $index,
                 'direction' => $direction,
             ],
-        ]);
+        ])['txInfos'];
     }
 
     /**
