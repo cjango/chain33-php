@@ -3,7 +3,7 @@
 namespace Jason\Chain33\Account;
 
 use Jason\Chain33\Kernel\BaseClient;
-use Jason\Chain33\Kernel\Support\Base58;
+use StephenHill\Base58;
 
 /**
  * Class Client
@@ -40,7 +40,7 @@ class Client extends BaseClient
      * @param $detail
      * @return string
      */
-    protected function getAddress($detail): string
+    protected function getAddress(array $detail): string
     {
         $x = str_pad(bin2hex($detail['ec']['x']), 64, '0', STR_PAD_LEFT);
         $y = bin2hex($detail['ec']['y']);
@@ -55,7 +55,7 @@ class Client extends BaseClient
         $checksum    = hash('sha256', hex2bin(hash('sha256', hex2bin($with_prefix))));
         $address     = $with_prefix . substr($checksum, 0, 8);
 
-        return (new \StephenHill\Base58())->encode(hex2bin($address));
+        return (new Base58())->encode(hex2bin($address));
     }
 
     /**
@@ -84,7 +84,7 @@ class Client extends BaseClient
     public function get(bool $withoutBalance = false): array
     {
         return $this->client->GetAccounts([
-            'withoutBalance' => false,
+            'withoutBalance' => $withoutBalance,
         ])['wallets'];
     }
 

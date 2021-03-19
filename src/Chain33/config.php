@@ -9,23 +9,23 @@ return [
     /**
      * 服务器地址
      */
-    'base_uri'     => '',
+    'base_uri'     => env('BLOCK_CHAIN_URI', ''),
 
     /**
      * 服务器端口
      */
-    'base_port'    => 8801,
+    'base_port'    => env('BLOCK_CHAIN_PORT', 8801),
 
     /**
      * 钱包密码，省的来回解锁了
      */
-    'password'     => '',
+    'password'     => env('BLOCK_CHAIN_PASSWORD', ''),
 
     /**
      * 超级管理员 ，地址 和 私钥
      */
     'superManager' => [
-        'address'    => '',
-        'privateKey' => '',
+        'address'    => env('BLOCK_CHAIN_MANAGER_ADDRESS', ''),
+        'privateKey' => env('BLOCK_CHAIN_MANAGER_KEY', ''),
     ],
 ];

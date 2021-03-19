@@ -61,7 +61,7 @@ class Client extends BaseClient
      * @Author : < Jason.C >
      * @return mixed
      */
-    public function coin()
+    public function coin(): string
     {
         return $this->client->GetCoinSymbol()['data'];
     }

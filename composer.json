@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "*",
         "google/protobuf": "^3.11",
         "pimple/pimple": "^3.0",
-        "stephenhill/base58": "^1.1"
+        "stephenhill/base58": "^1.1",
+        "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": {

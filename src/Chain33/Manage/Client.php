@@ -19,9 +19,9 @@ class Client extends BaseClient
      * @param  string  $value  对应地址
      * @param  string  $op     操作方法，add 添加，delete 删除
      * @param  string  $type   token-finisher , token-blacklist
-     * @return mixed
+     * @return string
      */
-    public function finisher(string $value, string $op = Consts::OP_ADD, string $type = Consts::TOKEN_FINISHER)
+    public function finisher(string $value, string $op = Consts::OP_ADD, string $type = Consts::TOKEN_FINISHER): string
     {
         $txHex = $this->client->CreateTransaction([
             'execer'     => 'manage',

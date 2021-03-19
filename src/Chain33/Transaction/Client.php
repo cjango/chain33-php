@@ -263,7 +263,7 @@ class Client extends BaseClient
      * @param  array  $txs  十六进制格式交易数组
      * @return string
      */
-    public function createRawTxGroup(array $txs)
+    public function createRawTxGroup(array $txs): string
     {
         return $this->client->CreateRawTxGroup([
             'txs' => $txs,
