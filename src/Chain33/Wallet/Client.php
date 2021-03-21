@@ -12,6 +12,20 @@ class Client extends BaseClient
 {
 
     /**
+     * Notes   : 生成SEED
+     * @Date   : 2021/3/21 12:10 下午
+     * @Author : < Jason.C >
+     * @param  int  $lang  0 english 1 中文
+     * @return string
+     */
+    public function genSeed(int $lang = 0): string
+    {
+        return $this->client->GenSeed([
+            'lang' => $lang,
+        ])['seed'];
+    }
+
+    /**
      * Notes: 创建一个钱包
      * @Author: <C.Jason>
      * @Date  : 2020/4/30 17:33
@@ -20,9 +34,7 @@ class Client extends BaseClient
      */
     public function create(string $password): bool
     {
-        $seed = $this->client->GenSeed([
-            'lang' => 0,
-        ]);
+        $seed = $this->genSeed(0);
 
         return $this->client->SaveSeed([
             'seed'   => $seed['seed'],
