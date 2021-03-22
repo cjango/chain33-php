@@ -34,10 +34,10 @@ class Client extends BaseClient
      */
     public function create(string $password): bool
     {
-        $seed = $this->genSeed(0);
+        $seed = $this->genSeed();
 
         return $this->client->SaveSeed([
-            'seed'   => $seed['seed'],
+            'seed'   => $seed,
             'passwd' => $password,
         ])['isOK'];
     }

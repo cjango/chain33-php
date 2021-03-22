@@ -97,6 +97,7 @@ message Transaction {
     int32  groupCount = 8;
     bytes  header     = 9;
     bytes  next       = 10;
+    int32  chainID    = 11;
 }
 
 message Transactions {
@@ -266,4 +267,16 @@ message TxProof {
     repeated bytes proofs   = 1;
     uint32         index    = 2;
     bytes          rootHash = 3;
+}
+
+// 指定交易哈希，查找是否存在
+message ReqCheckTxsExist {
+    repeated bytes txHashes = 1;
+}
+
+message ReplyCheckTxsExist {
+    //对应请求序列存在标识数组，存在则true，否则false
+    repeated bool existFlags = 1;
+    //存在情况的总个数
+    uint32 existCount = 2;
 }

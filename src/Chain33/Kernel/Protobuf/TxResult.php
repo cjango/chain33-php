@@ -103,11 +103,21 @@ class TxResult extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.Jason.Chain33.Kernel.Protobuf.Transaction tx = 3;</code>
-     * @return \Jason\Chain33\Kernel\Protobuf\Transaction
+     * @return \Jason\Chain33\Kernel\Protobuf\Transaction|null
      */
     public function getTx()
     {
-        return $this->tx;
+        return isset($this->tx) ? $this->tx : null;
+    }
+
+    public function hasTx()
+    {
+        return isset($this->tx);
+    }
+
+    public function clearTx()
+    {
+        unset($this->tx);
     }
 
     /**
@@ -125,11 +135,21 @@ class TxResult extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.Jason.Chain33.Kernel.Protobuf.ReceiptData receiptdate = 4;</code>
-     * @return \Jason\Chain33\Kernel\Protobuf\ReceiptData
+     * @return \Jason\Chain33\Kernel\Protobuf\ReceiptData|null
      */
     public function getReceiptdate()
     {
-        return $this->receiptdate;
+        return isset($this->receiptdate) ? $this->receiptdate : null;
+    }
+
+    public function hasReceiptdate()
+    {
+        return isset($this->receiptdate);
+    }
+
+    public function clearReceiptdate()
+    {
+        unset($this->receiptdate);
     }
 
     /**

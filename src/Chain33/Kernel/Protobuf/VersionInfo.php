@@ -32,6 +32,10 @@ class VersionInfo extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string localDb = 4;</code>
      */
     protected $localDb = '';
+    /**
+     * Generated from protobuf field <code>int32 chainID = 5;</code>
+     */
+    protected $chainID = 0;
 
     /**
      * Constructor.
@@ -43,6 +47,7 @@ class VersionInfo extends \Google\Protobuf\Internal\Message
      *     @type string $app
      *     @type string $chain33
      *     @type string $localDb
+     *     @type int $chainID
      * }
      */
     public function __construct($data = NULL) {
@@ -134,6 +139,28 @@ class VersionInfo extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->localDb = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 chainID = 5;</code>
+     * @return int
+     */
+    public function getChainID()
+    {
+        return $this->chainID;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 chainID = 5;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setChainID($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->chainID = $var;
 
         return $this;
     }

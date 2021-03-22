@@ -4,8 +4,8 @@ namespace Jason\Chain33\Kernel;
 
 use Exception;
 use GuzzleHttp\Client as Guzzle;
+use Jason\Chain33\Exceptions\ChainException;
 use Jason\Chain33\Kernel\Support\RpcRequest;
-use RuntimeException;
 
 class Client
 {
@@ -51,21 +51,21 @@ class Client
     public function post(RpcRequest $body)
     {
         try {
-            $response = $this->client->post('', ['body' => (string)$body]);
+            $response = $this->client->post('', ['body' => (string) $body]);
 
             $resJson = json_decode($response->getBody()->getContents(), true);
 
             if ($body->getId() != $resJson['id']) {
-                throw new RuntimeException("No the same id");
+                throw new ChainException("No the same id");
             }
 
             if ($resJson['error']) {
-                throw new RuntimeException($resJson['error'] . '|' . $body->toJson());
+                throw new ChainException($resJson['error']);
             }
 
             return $resJson['result'];
         } catch (Exception $exception) {
-            throw new RuntimeException($exception->getMessage());
+            throw new ChainException($exception->getMessage());
         }
     }
 

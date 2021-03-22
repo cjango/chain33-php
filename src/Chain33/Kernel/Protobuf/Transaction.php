@@ -57,6 +57,10 @@ class Transaction extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>bytes next = 10;</code>
      */
     protected $next = '';
+    /**
+     * Generated from protobuf field <code>int32 chainID = 11;</code>
+     */
+    protected $chainID = 0;
 
     /**
      * Constructor.
@@ -76,6 +80,7 @@ class Transaction extends \Google\Protobuf\Internal\Message
      *     @type int $groupCount
      *     @type string $header
      *     @type string $next
+     *     @type int $chainID
      * }
      */
     public function __construct($data = NULL) {
@@ -129,11 +134,21 @@ class Transaction extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.Jason.Chain33.Kernel.Protobuf.Signature signature = 3;</code>
-     * @return \Jason\Chain33\Kernel\Protobuf\Signature
+     * @return \Jason\Chain33\Kernel\Protobuf\Signature|null
      */
     public function getSignature()
     {
-        return $this->signature;
+        return isset($this->signature) ? $this->signature : null;
+    }
+
+    public function hasSignature()
+    {
+        return isset($this->signature);
+    }
+
+    public function clearSignature()
+    {
+        unset($this->signature);
     }
 
     /**
@@ -307,6 +322,28 @@ class Transaction extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, False);
         $this->next = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 chainID = 11;</code>
+     * @return int
+     */
+    public function getChainID()
+    {
+        return $this->chainID;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 chainID = 11;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setChainID($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->chainID = $var;
 
         return $this;
     }

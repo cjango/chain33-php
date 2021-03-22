@@ -12,28 +12,30 @@ class Client extends BaseClient
 {
 
     /**
-     * Notes: 转账（三合一）
+     * Notes: 转账（三合一，平行链直接实现主链代扣）
      * @Author: <C.Jason>
      * @Date  : 2020/5/2 21:34
-     * @param  string  $to       发送到地址
-     * @param  int     $amount   转账金额
-     * @param  string  $privkey  私钥
-     * @param  string  $symbol   代币
-     * @param  string  $note     备注
+     * @param  string  $to          发送到地址
+     * @param  int     $amount      转账金额
+     * @param  string  $privateKey  私钥
+     * @param  string  $symbol      代币
+     * @param  string  $note        备注
      * @return string
      */
     public function transfer(
         string $to,
         int $amount,
-        string $privkey,
+        string $privateKey,
         string $symbol = '',
         string $note = ''
     ): string {
         $isToken = !empty($symbol);
 
-        $txHex = $this->createRaw($to, $amount, 0, '', $symbol, $isToken, false, '', $note);
+        $txHex = $this->createRaw($to, $amount, 0, $symbol, $isToken, false, '', $note);
 
-        $data = $this->sign($privkey, $txHex);
+        $txHex = $this->paraTransaction($txHex);
+
+        $data = $this->sign($privateKey, $txHex, '300s', 0, 2);
 
         return $this->send($data);
     }
@@ -59,7 +61,6 @@ class Client extends BaseClient
      * @param  string  $to           发送到地址
      * @param  int     $amount       发送金额，注意基础货币单位为10^8
      * @param  int     $fee          手续费，注意基础货币单位为10^8
-     * @param  string  $execer       执行器名称，如果是普通转账，此处应填coins，如果是构造平行链的基础代币，此处要填写user.p.xxx.coins
      * @param  string  $tokenSymbol  token 的 symbol （非token转账这个不用填）
      * @param  bool    $isToken      是否是token类型的转账 （非token转账这个不用填 包括平行链的基础代币转账也不用填）
      * @param  bool    $isWithdraw   是否为取款交易
@@ -71,13 +72,14 @@ class Client extends BaseClient
         string $to,
         int $amount,
         int $fee = 0,
-        string $execer = 'coins',
         string $tokenSymbol = '',
         bool $isToken = true,
         bool $isWithdraw = false,
         string $execName = '',
         string $note = ''
     ): string {
+        $this->unlock(false);
+
         return $this->client->CreateRawTransaction([
             'to'          => $to,
             'amount'      => $amount,
@@ -87,7 +89,7 @@ class Client extends BaseClient
             'isWithdraw'  => $isWithdraw,
             'tokenSymbol' => $tokenSymbol,
             'execName'    => $execName,
-            'execer'      => $execer,
+            'execer'      => $this->parseExecer('coins'),
         ]);
     }
 
@@ -97,15 +99,16 @@ class Client extends BaseClient
      *           后面的交易签名步骤里需要注意一点，参数index需填2
      * @Date   : 2021/1/26 4:22 下午
      * @Author : < Jason.C >
-     * @param  string  $txHex    未签名的原始交易数据
-     * @param  string  $payAddr  用于付费的地址，这个地址要在主链上存在，并且里面有比特元用于支付手续费，使用payAddr则依赖钱包中存储的私钥签名
+     * @param  string  $txHex  未签名的原始交易数据
      * @return string            未签名的原始交易数据
      */
-    public function paraTransaction(string $txHex, string $payAddr)
+    public function paraTransaction(string $txHex)
     {
+        $this->unlock(false);
+
         return $this->client->CreateNoBalanceTransaction([
             'txHex'   => $txHex,
-            'payAddr' => $payAddr,
+            'payAddr' => $this->config['para_pay_addr'],
         ]);
     }
 

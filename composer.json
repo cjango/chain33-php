@@ -1,6 +1,6 @@
 {
-    "name": "jasonc/chain33-php",
-    "description": "chain33 区块链PHP SDK",
+    "name": "jasonc/chain33-para",
+    "description": "chain33 平行链 区块链PHP SDK",
     "license": "MIT",
     "type": "library",
     "authors": [
